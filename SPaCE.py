@@ -335,7 +335,7 @@ class trajectory:
             index=[np.argmin(np.abs(p_time-x))+1 for x in np.arange(t,t+pulse.tp,self.dt)]
             self.traj[:,:,pos+1:final_pos+1]=p_traj[:,:,index]
             self.tipped_angle=np.arccos(self.traj[:,2,final_pos])
-            self.nu=self.nu+np.multiply(self.dipolar,np.cos(self.verytipped_angle))
+            self.nu=self.nu+np.multiply(self.dipolar,np.cos(self.tipped_angle))
 
         if pulse.type=='custom':
             pos=np.argmin(abs(self.time-t))
