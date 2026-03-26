@@ -348,8 +348,8 @@ class trajectory:
             sign=[1,-1,1,-1]
             index=phases.index(direction)
             for i in range(len(np.arange(t,t+pulse.tp,pulse.resolution))):
-                self.find_deltaB(pulse.freq(i*pulse.resolution))
-                amp=pulse.amp(i*pulse.resolution)
+                self.find_deltaB(pulse.freq(i*pulse.resolution-pulse.tp/2))
+                amp=pulse.amp(i*pulse.resolution-pulse.tp/2)
                 theta=np.arctan(self.deltaB/(pulse.B1*amp))
                 rotvec=np.zeros_like(p_traj[:,:,0])
                 rotvec[:,plane[index]]=np.cos(theta)*sign[index]
@@ -636,18 +636,18 @@ class pulse:
     None
 
     '''
-    def __init__(self, alpha, tp, type='rect', f0=None, f1=None, n_wurst=None,
+    def __init__(self, type='rect', tp=None, alpha=None, f0=None, f1=None, n_wurst=None,
                  resolution=0.1,freq=None,amp=None,B1=None):
         self.type=type.lower()
         match self.type:
             case 'rect':
-                assert((alpha and tp) is not  None)
+                # assert((alpha and tp) is not  None)
                 self.rect(alpha, tp)
             case 'wurst':
-                assert((alpha and tp and f0 and f1 and n_wurst and resolution) is not  None)
+                # assert((alpha and tp and f0 and f1 and n_wurst and resolution) is not  None)
                 self.wurst(alpha,tp,f0,f1,n_wurst,resolution)
             case 'custom':
-                assert((tp and freq and amp and B1 and resolution) is not None)
+                # assert((tp and freq and amp and B1 and resolution) is not None)
                 self.custom(tp,freq,amp,B1,resolution)
             case _:
                 return "Undefined type. Options are 'rect', 'wurst', or 'custom'."
